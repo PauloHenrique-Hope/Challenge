@@ -1,0 +1,124 @@
+.main {
+  max-width: 900px;
+  margin: 0 auto;
+  min-height: 100vh;
+  margin-top: 6.25rem;
+}
+
+.main h1 {
+  text-align: center;
+}
+
+.main ul {
+  margin-top: 1rem;
+}
+
+.form {
+  margin-top: 2rem;
+  display: flex;
+  height: 4.5rem;
+  gap: 1rem;
+}
+
+.form input {
+  height: 100%;
+  flex: 1;
+  border-radius: 0.75rem;
+  color: #909090;
+  padding: 0 2rem;
+  border: 1px solid #D4D4D4;
+}
+
+.form input::placeholder {
+  color: #D0D0D0;
+}
+
+.form button {
+  background-color: #4178E3;
+  color: #FFFFFF;
+  width: 12.5rem;
+  height: 100%;
+  border-radius: 0.75rem;
+  transition: all 0.4s ease-in;
+}
+
+.form button:hover {
+  filter: brightness(0.8);  
+}
+
+.tasks {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 3rem;
+}
+
+.tasks h2 {
+  color: #4178E3;
+}
+
+.tasks span {
+  display: block;
+  color: #909090;
+}
+
+.task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #F7F7F7;
+  border-radius: 0.75rem;
+  border: 1px solid #D4D4D4;
+  color: #909090;
+  padding: 2.125rem 1.75rem;
+}
+
+.task:not(:last-child) {
+  margin-bottom: 0.5rem;
+}
+
+.task div {
+  display: flex;
+  gap: 0.5rem;
+  
+}
+
+.task div > button {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 0.75rem;
+  transition: all 0.4s ease-in;
+}
+
+.task div > button:hover {
+  filter: brightness(0.8);  
+}
+
+.taskBtnDone {
+  background-color: #B5DAFC;
+  color: #4178E3;
+}
+
+.taskBtnDelete {
+  background-color: #FFD1D1;
+  color: #F45E5E;
+}
+
+.div{
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.taskBtnClear{
+  border-radius: 20px;
+  padding: 7px;
+  background-color: #FFD1D1;
+  font-size: 17px;
+  transition: all 0.4s ease-in;
+
+}
+
+.taskBtnClear:hover{
+  filter: brightness(0.8); 
+}
