@@ -1,48 +1,86 @@
 'use client'
 
-import styles from "./page.module.css";
 import { useState } from "react";
-import { Check, Trash } from 'lucide-react';
+import { Check, Trash, Undo } from 'lucide-react';
 import { v4 as uuid } from 'uuid';
+
+import styles from "./page.module.css";
+import { Span } from "next/dist/trace";
 
 
 
 interface Task {
   id: string;
-  task: string;
+  name: string;
   isDone: boolean;
+  createdAt: string;
 }
 
-export default function Home() {
+// clean code, add new functions
+
+/* 
+* Imutabilidade
+* Propriedade
+* Component
+*/ 
+
+export default function Home() {  
+  const [inputTask, setInputTask] = useState<string>("")
+  const [tasks, setTasks] = useState<Task[]>([]) 
   
-  const [task, setTask] = useState<string>("")
-  const [items, setItems] = useState([] as any)
-  
-  const unique_id = uuid(); // Generate random ID
-  const numItems = items.length
+  const totalTasks = tasks.length;  
+  const totalTasksDone = tasks.filter((task) => task.isDone === true ).length;
+  const tasksFormatted = tasks.map(function(task) {
+    return {
+      id: task.id,
+      name: task.name,
+      isDone: task.isDone,
+      createdAt: new Date(task.createdAt).toLocaleDateString('pt-br', { dateStyle: "medium" })
+    }
+  })
 
 
   function handleCreateTask(){
 
-    if(task === "")return
+    if(inputTask === "")return
     
-    const newItem:Task = {task, id: unique_id, isDone: false}
+    const newItem:Task = {
+      id: uuid(),
+      isDone: false,
+      name: inputTask,
+      createdAt: Date()
+    }
     
-    setItems((items:any) => [...items, newItem])
-    setTask("")
-    
+    setTasks((tasks) => [...tasks, newItem])    
+    setInputTask("") 
   }
 
-  function handleDeleteTask(id:number){
-    setItems((items:any) => items.filter((item:any) => item.id !== id))
+  function handleDeleteTask(id:string){
+    setTasks((items) => items.filter((item) => item.id !== id))
   }
 
-  function handleCheckedTask(id:Task){
-    setItems((items:any) => items.map((item:any) => item.id === id? {...item, isDone: !item.isDone }: item))
+  function handleCheckedTask(id:string){
+    const taskIndex = tasks.findIndex((task) => task.id === id);    
+    tasks[taskIndex].isDone = !tasks[taskIndex].isDone;
+    setTasks([...tasks])
+    console.log(tasks[taskIndex].isDone)
+    
+    // setTasks((items) => items.map((item) => item.id === id ? {...item, isDone: !item.isDone } : item))
   }
 
   function handleClearList(){
-    setItems([])
+
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete all items?"
+    );
+
+    if (isConfirmed) setTasks([]);
+  }
+  
+  function handleUndoTask(id:string){
+    const taskIndex = tasks.findIndex((task) => task.id === id);    
+    setTasks([...tasks])
+    tasks[taskIndex].isDone = !tasks[taskIndex].isDone;
   }
 
   return (
@@ -54,8 +92,8 @@ export default function Home() {
           id="task" 
           name="task" 
           placeholder="Add new task" 
-          value={task}
-          onChange={e => setTask(e.target.value)}
+          value={inputTask}
+          onChange={e => setInputTask(e.target.value)}
         />
         <button type="button" onClick={handleCreateTask}>Criar</button>
       </div>
@@ -64,22 +102,36 @@ export default function Home() {
         <h2>Atividades</h2>
         <div className={styles.div}>
           <button className={styles.taskBtnClear} onClick={handleClearList}>Clear</button>
-          <span>Total: {numItems}</span>
+          <span>Total: {totalTasksDone}/{totalTasks}</span>
         </div>
       </div>
 
-      <ul>
-        {items.map((item:any) => (
+      {/* <Tasks tasksFormatted={tasksFormatted} onDeleteTask={handleDeleteTask}/> */}
+      
 
-          <li key={item.id} data-isdone={false} className={styles.task}>
-            <span style={item.isDone ? { textDecoration: "line-through" } : {}}>{item.task}</span>
+      <ul>
+        {tasksFormatted.map((item) => (
+
+          <li key={item.id} data-isdone={item.isDone} className={styles.task}>
+            <span>{item.name}</span>
+     
+            <span>{item.createdAt}</span>
             <div>
-              <button 
-                style={item.isDone? {display: 'none'}: {}}
-                onClick={()=>handleCheckedTask(item.id)}
+              {item.isDone &&(
+
+              <button onClick={() => handleUndoTask(item.id)}
                 className={styles.taskBtnDone}>
-                  <Check />
+                <Undo />
               </button>
+              )}
+
+              {!item.isDone && (                
+                <button                 
+                  onClick={()=>handleCheckedTask(item.id)}
+                  className={styles.taskBtnDone}>
+                    <Check />
+                </button>                
+              )}
 
               <button onClick={() => handleDeleteTask(item.id)}
                 className={styles.taskBtnDelete}>
@@ -87,11 +139,8 @@ export default function Home() {
               </button>
             </div>
           </li>
-
-        ))}
-      
-      </ul>
-      
+        ))}      
+      </ul>      
     </main>
   );
 }
