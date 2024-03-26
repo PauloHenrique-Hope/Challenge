@@ -19,6 +19,8 @@ interface Task {
   createdAt: string;
 }
 
+
+
 // clean code, add new functions
 
 /* 
@@ -62,7 +64,7 @@ export default function Home() {
     setTasks((items) => items.filter((item) => item.id !== id))
   }
 
-  function handleCheckedTask(id:string){
+  function handleCheckedTask<Props>(id:string){
     const taskIndex = tasks.findIndex((task) => task.id === id);    
     tasks[taskIndex].isDone = !tasks[taskIndex].isDone;
     setTasks([...tasks])
@@ -107,13 +109,10 @@ export default function Home() {
           <span>Total: {totalTasksDone}/{totalTasks}</span>
         </div>
       </div>
-
-      {/* <Tasks tasksFormatted={tasksFormatted} onDeleteTask={handleDeleteTask}/> */}
       
-      <Task tasksFormatted={tasksFormatted} onCreateTask={handleCreateTask}
+      <Task tasksFormatted={tasksFormatted}
           onDeleteTask={handleDeleteTask}
           onCheckedTask={handleCheckedTask}
-          onClearList={handleClearList}
           onUndoTask={handleUndoTask}/>
     </main>
   );

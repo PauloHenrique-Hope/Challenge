@@ -1,30 +1,31 @@
-// ul = tasks
-// li = task
 
-import { Check, Trash, Undo } from 'lucide-react';
 import styles from './styles.module.css'
+import { Check, Trash, Undo } from 'lucide-react';
 
-// interface Task {
-//   id: string;
-//   name: string;
-//   isDone: boolean;
-//   createdAt: string;
-// }
+//Components
+import TaskItem from './TaskItem'
+import React from 'react';
 
 
-// interface tasksFormatted {
-//   id: task.id,
-//   name: task.name,
-//   isDone: task.isDone,
-//   createdAt: new Date(task.createdAt).toLocaleDateString('pt-br', { dateStyle: "medium" })
-// }
+type Props = {
+  onCreateTask: React.MouseEventHandler;
+  onDeleteTask: React.MouseEventHandler;
+  onCheckedTask: React.MouseEventHandler;
+  onUndoTask: React.MouseEventHandler;
+  tasksFormatted: any;
+}
 
 
-export default function Tasks({tasksFormatted, onCreateTask, onDeleteTask, onCheckedTask, onClearList, onUndoTask}) {
+
+export default function Tasks({tasksFormatted, onDeleteTask, onCheckedTask, onUndoTask}:Props) {
   return (
-    <div>
+    
       <ul>
-          {tasksFormatted.map((item) => (
+        {/* <TaskItem tasksFormatted={tasksFormatted}
+          onDeleteTask={onDeleteTask}
+          onCheckedTask={onCheckedTask}
+          onUndoTask={onUndoTask}/> */}
+        {tasksFormatted.map((item:any) => (
             <li key={item.id} data-isdone={item.isDone} className={styles.task}>
               <span>{item.name}</span>
       
@@ -50,7 +51,7 @@ export default function Tasks({tasksFormatted, onCreateTask, onDeleteTask, onChe
               </div>
             </li>
           ))}
+          
         </ul>
-    </div>
   )
 }
