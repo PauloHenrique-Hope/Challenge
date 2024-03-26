@@ -30,6 +30,10 @@ export default function Home() {
     }
   })
 
+  function handleInputChange(e: React.FormEvent<HTMLInputElement>){
+    setInputTask(e.currentTarget.value)
+  }
+
 
   function handleCreateTask(){
     if(inputTask === "")return
@@ -85,7 +89,8 @@ export default function Home() {
           name="task" 
           placeholder="Add new task" 
           value={inputTask}
-          onChange={e => setInputTask(e.target.value)}
+          onChange={handleInputChange}
+          // onChange={e => setInputTask(e.target.value)}
         />
         <button type="button" onClick={handleCreateTask}>Criar</button>
       </div>
