@@ -1,37 +1,39 @@
 import { Check, Trash, Undo } from 'lucide-react';
 import styles from './styles.module.css'
 
-import { TasksProps } from './index';
+import { TaskData } from '@/app/page';
 
+interface TaskItemProps {
+  data: TaskData;
+  onDeleteTask: (id: string) => void;
+  onCheckedTask: (id: string) => void;
+  onUndoTask: (id: string) => void;
+}
 
-export function TaskItem({tasksFormatted, onDeleteTask, onCheckedTask, onUndoTask}:TasksProps){
-  return(
-    <div>
-      {tasksFormatted.map((item) => (
-          <li key={item.id} data-isdone={item.isDone} className={styles.task}>
-            <span>{item.name}</span>
-            <span>{item.createdAt}</span>
-            <div>
-              {item.isDone &&(
-              <button onClick={() => onUndoTask(item.id)}
-                className={styles.taskBtnDone}>
-                <Undo />
-              </button>
-              )}
-              {!item.isDone && (
-                <button
-                  onClick={()=> onCheckedTask(item.id)}
-                  className={styles.taskBtnDone}>
-                    <Check />
-                </button>
-              )}
-              <button onClick={() => onDeleteTask(item.id)}
-                className={styles.taskBtnDelete}>
-                  <Trash />
-              </button>
-            </div>
-          </li>
-        ))}
-    </div>
+export function TaskItem({data, onDeleteTask, onCheckedTask, onUndoTask}:TaskItemProps){
+  return(    
+    <li data-isdone={data.isDone} className={styles.task}>
+      <span>{data.name}</span>
+      <span>{data.createdAt}</span>
+      <div>
+        {data.isDone &&(
+        <button onClick={() => onUndoTask(data.id)}
+          className={styles.taskBtnDone}>
+          <Undo />
+        </button>
+        )}
+        {!data.isDone && (
+          <button
+            onClick={()=> onCheckedTask(data.id)}
+            className={styles.taskBtnDone}>
+              <Check />
+          </button>
+        )}
+        <button onClick={() => onDeleteTask(data.id)}
+          className={styles.taskBtnDelete}>
+            <Trash />
+        </button>
+      </div>
+    </li>    
   )
 }

@@ -4,8 +4,8 @@ import { useState } from "react";
 import { v4 as uuid } from 'uuid';
 import styles from "./page.module.css";
 
-
-import {Tasks} from "../components/Tasks"
+import {TaskProvider} from '@/context/task';
+import {Tasks} from "@/components/Tasks"
 
 
 export interface TaskData {
@@ -80,35 +80,36 @@ export default function Home() {
   }
 
   return (
-    <main className={styles.main}>
-      <h1>Todo App</h1>
+    <TaskProvider>
+      <main className={styles.main}>
+        <h1>Todo App</h1>
 
-      <div className={styles.form}>
-        <input 
-          id="task" 
-          name="task" 
-          placeholder="Add new task" 
-          value={inputTask}
-          onChange={handleInputChange}
-          // onChange={e => setInputTask(e.target.value)}
-        />
-        <button type="button" onClick={handleCreateTask}>Criar</button>
-      </div>
-
-      <div className={styles.tasks}>
-        <h2>Atividades</h2>
-        <div className={styles.div}>
-          <button className={styles.taskBtnClear} onClick={handleClearList}>Clear</button>
-          <span>Total: {totalTasksDone}/{totalTasks}</span>
+        <div className={styles.form}>
+          <input 
+            id="task" 
+            name="task" 
+            placeholder="Add new task" 
+            value={inputTask}
+            onChange={handleInputChange}
+            // onChange={e => setInputTask(e.target.value)}
+          />
+          <button type="button" onClick={handleCreateTask}>Criar</button>
         </div>
-      </div>
-      
-      <Tasks 
-        tasksFormatted={tasksFormatted}
-        onDeleteTask={handleDeleteTask}
-        onCheckedTask={handleCheckedTask}
-        onUndoTask={handleUndoTask}
-      />
-    </main>
+
+        <div className={styles.tasks}>
+          <h2>Atividades</h2>
+          <div className={styles.div}>
+            <button className={styles.taskBtnClear} onClick={handleClearList}>Clear</button>
+            <span>Total: {totalTasksDone}/{totalTasks}</span>
+          </div>
+        </div>
+        
+        <Tasks           
+          onDeleteTask={handleDeleteTask}
+          onCheckedTask={handleCheckedTask}
+          onUndoTask={handleUndoTask}
+        />
+      </main>
+    </TaskProvider>
   );
 }
