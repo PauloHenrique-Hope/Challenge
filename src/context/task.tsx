@@ -6,7 +6,7 @@ interface Tasks {
   id: string;
   name: string;
   isDone: boolean;
-  createdAt: number;
+  createdAt: string | number;
 }
 
 interface TaskContextData {
