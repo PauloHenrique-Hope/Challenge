@@ -1,0 +1,77 @@
+
+.task {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #F7F7F7;
+    border-radius: 0.75rem;
+    border: 1px solid #D4D4D4;
+    color: #909090;
+    padding: 2.125rem 1.75rem;
+}
+
+.task[data-isdone=true] {
+    text-decoration: line-through;
+  }
+  
+  .task {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #F7F7F7;
+    border-radius: 0.75rem;
+    border: 1px solid #D4D4D4;
+    color: #909090;
+    padding: 2.125rem 1.75rem;
+  }
+  
+  .task:not(:last-child) {
+    margin-bottom: 0.5rem;
+  }
+  
+  .task div {
+    display: flex;
+    gap: 0.5rem;
+    
+  }
+  
+  .task div > button {
+    width: 2.75rem;
+    height: 2.75rem;
+    border-radius: 0.75rem;
+    transition: all 0.4s ease-in;
+  }
+  
+  .task div > button:hover {
+    filter: brightness(0.8);  
+  }
+  
+  .taskBtnDone {
+    background-color: #B5DAFC;
+    color: #4178E3;
+  }
+  
+  .taskBtnDelete {
+    background-color: #FFD1D1;
+    color: #F45E5E;
+  }
+  
+  .div{
+    display: flex;
+    align-items: center;
+    gap: 7px;
+  }
+  
+  .taskBtnClear{
+    border-radius: 20px;
+    padding: 7px;
+    background-color: #FFD1D1;
+    font-size: 17px;
+    transition: all 0.4s ease-in;
+  
+  }
+  
+  .taskBtnClear:hover{
+    filter: brightness(0.8); 
+  }
+  

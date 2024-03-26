@@ -1,11 +1,14 @@
 'use client'
 
 import { useState } from "react";
-import { Check, Trash, Undo } from 'lucide-react';
 import { v4 as uuid } from 'uuid';
 
+// Styles
 import styles from "./page.module.css";
-import { Span } from "next/dist/trace";
+
+// Components
+import Task from "../components/Tasks"
+
 
 
 
@@ -63,7 +66,6 @@ export default function Home() {
     const taskIndex = tasks.findIndex((task) => task.id === id);    
     tasks[taskIndex].isDone = !tasks[taskIndex].isDone;
     setTasks([...tasks])
-    console.log(tasks[taskIndex].isDone)
     
     // setTasks((items) => items.map((item) => item.id === id ? {...item, isDone: !item.isDone } : item))
   }
@@ -108,39 +110,11 @@ export default function Home() {
 
       {/* <Tasks tasksFormatted={tasksFormatted} onDeleteTask={handleDeleteTask}/> */}
       
-
-      <ul>
-        {tasksFormatted.map((item) => (
-
-          <li key={item.id} data-isdone={item.isDone} className={styles.task}>
-            <span>{item.name}</span>
-     
-            <span>{item.createdAt}</span>
-            <div>
-              {item.isDone &&(
-
-              <button onClick={() => handleUndoTask(item.id)}
-                className={styles.taskBtnDone}>
-                <Undo />
-              </button>
-              )}
-
-              {!item.isDone && (                
-                <button                 
-                  onClick={()=>handleCheckedTask(item.id)}
-                  className={styles.taskBtnDone}>
-                    <Check />
-                </button>                
-              )}
-
-              <button onClick={() => handleDeleteTask(item.id)}
-                className={styles.taskBtnDelete}>
-                  <Trash />
-              </button>
-            </div>
-          </li>
-        ))}      
-      </ul>      
+      <Task tasksFormatted={tasksFormatted} onCreateTask={handleCreateTask}
+          onDeleteTask={handleDeleteTask}
+          onCheckedTask={handleCheckedTask}
+          onClearList={handleClearList}
+          onUndoTask={handleUndoTask}/>
     </main>
   );
 }
