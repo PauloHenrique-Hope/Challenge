@@ -1,57 +1,27 @@
-
 import styles from './styles.module.css'
+import React from 'react';
 import { Check, Trash, Undo } from 'lucide-react';
 
-//Components
-import TaskItem from './TaskItem'
-import React from 'react';
+import {TaskData} from '@/app/page';
 
+import {TaskItem} from './TaskItem'
 
-type Props = {
-  onCreateTask: React.MouseEventHandler;
-  onDeleteTask: React.MouseEventHandler;
-  onCheckedTask: React.MouseEventHandler;
-  onUndoTask: React.MouseEventHandler;
-  tasksFormatted: any;
+export type TasksProps = {
+  onDeleteTask: (id: string) => void;
+  onCheckedTask: (id: string) => void;
+  onUndoTask: (id: string) => void;
+  tasksFormatted: TaskData[];
 }
 
-
-
-export default function Tasks({tasksFormatted, onDeleteTask, onCheckedTask, onUndoTask}:Props) {
-  return (
-    
-      <ul>
-        {/* <TaskItem tasksFormatted={tasksFormatted}
-          onDeleteTask={onDeleteTask}
-          onCheckedTask={onCheckedTask}
-          onUndoTask={onUndoTask}/> */}
-        {tasksFormatted.map((item:any) => (
-            <li key={item.id} data-isdone={item.isDone} className={styles.task}>
-              <span>{item.name}</span>
-      
-              <span>{item.createdAt}</span>
-              <div>
-                {item.isDone &&(
-                <button onClick={() => onUndoTask(item.id)}
-                  className={styles.taskBtnDone}>
-                  <Undo />
-                </button>
-                )}
-                {!item.isDone && (
-                  <button
-                    onClick={()=> onCheckedTask(item.id)}
-                    className={styles.taskBtnDone}>
-                      <Check />
-                  </button>
-                )}
-                <button onClick={() => onDeleteTask(item.id)}
-                  className={styles.taskBtnDelete}>
-                    <Trash />
-                </button>
-              </div>
-            </li>
-          ))}
-          
-        </ul>
+export function Tasks({
+  tasksFormatted, onDeleteTask, onCheckedTask, onUndoTask}
+:TasksProps) {
+  return (    
+    <ul>    
+      <TaskItem tasksFormatted={tasksFormatted}
+        onDeleteTask={onDeleteTask}
+        onCheckedTask={onCheckedTask}
+        onUndoTask={onUndoTask}/>
+    </ul>
   )
 }

@@ -2,36 +2,22 @@
 
 import { useState } from "react";
 import { v4 as uuid } from 'uuid';
-
-// Styles
 import styles from "./page.module.css";
 
-// Components
-import Task from "../components/Tasks"
+
+import {Tasks} from "../components/Tasks"
 
 
-
-
-interface Task {
+export interface TaskData {
   id: string;
   name: string;
   isDone: boolean;
   createdAt: string;
 }
 
-
-
-// clean code, add new functions
-
-/* 
-* Imutabilidade
-* Propriedade
-* Component
-*/ 
-
 export default function Home() {  
   const [inputTask, setInputTask] = useState<string>("")
-  const [tasks, setTasks] = useState<Task[]>([]) 
+  const [tasks, setTasks] = useState<TaskData[]>([]) 
   
   const totalTasks = tasks.length;  
   const totalTasksDone = tasks.filter((task) => task.isDone === true ).length;
@@ -46,10 +32,9 @@ export default function Home() {
 
 
   function handleCreateTask(){
-
     if(inputTask === "")return
     
-    const newItem:Task = {
+    const newItem:TaskData = {
       id: uuid(),
       isDone: false,
       name: inputTask,
@@ -60,17 +45,19 @@ export default function Home() {
     setInputTask("") 
   }
 
-  function handleDeleteTask(id:string){
+
+  function handleDeleteTask(id: string){    
     setTasks((items) => items.filter((item) => item.id !== id))
   }
 
-  function handleCheckedTask<Props>(id:string){
+
+
+  function handleCheckedTask(id:string){
     const taskIndex = tasks.findIndex((task) => task.id === id);    
     tasks[taskIndex].isDone = !tasks[taskIndex].isDone;
     setTasks([...tasks])
-    
-    // setTasks((items) => items.map((item) => item.id === id ? {...item, isDone: !item.isDone } : item))
   }
+    
 
   function handleClearList(){
 
@@ -80,11 +67,12 @@ export default function Home() {
 
     if (isConfirmed) setTasks([]);
   }
-  
+
+
   function handleUndoTask(id:string){
     const taskIndex = tasks.findIndex((task) => task.id === id);    
-    setTasks([...tasks])
     tasks[taskIndex].isDone = !tasks[taskIndex].isDone;
+    setTasks([...tasks])
   }
 
   return (
@@ -110,10 +98,12 @@ export default function Home() {
         </div>
       </div>
       
-      <Task tasksFormatted={tasksFormatted}
-          onDeleteTask={handleDeleteTask}
-          onCheckedTask={handleCheckedTask}
-          onUndoTask={handleUndoTask}/>
+      <Tasks 
+        tasksFormatted={tasksFormatted}
+        onDeleteTask={handleDeleteTask}
+        onCheckedTask={handleCheckedTask}
+        onUndoTask={handleUndoTask}
+      />
     </main>
   );
 }
