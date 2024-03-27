@@ -1,10 +1,10 @@
-"use client"
-import {createContext, useContext, useState, ReactNode,  Dispatch, SetStateAction, ChangeEvent} from 'react';
+'use client'
+
 import { format} from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { v4 as uuid } from 'uuid';
 import { TaskData } from '@/app/page';
-
+import {createContext, useContext, useState, ReactNode,  Dispatch, SetStateAction, ChangeEvent} from 'react';
 
 interface Tasks {
   id: string;
@@ -25,8 +25,7 @@ interface TaskContextData {
   handleDeleteTask: (id: string) => void;
   handleClearList: () => void;
   handleCheckedTask: (id: string) => void;
-  handleUndoTask: (id: string) => void;
-  
+  handleUndoTask: (id: string) => void;  
 }
 
 export const TaskContext = createContext({} as TaskContextData);
@@ -37,23 +36,10 @@ interface TaskProviderProps {
 
 export function TaskProvider({ children }: TaskProviderProps) {
 
-  const data = new Date();
+  const today = new Date();
   
-  const [tasks, setTasks] = useState<Tasks[]>([
-    {
-      id: '1',      
-      name: 'react',
-      isDone: false,
-      createdAt: format(data, "dd 'de' MMMM 'de' yyyy", {locale: ptBR}),
-    },
-    {
-      id: '2',      
-      name: 'react native',
-      isDone: false,
-      createdAt: format(data, "dd 'de' MMMM 'de' yyyy", {locale: ptBR}),
-    }
-  ]);
-  // useState: input Task
+  const [tasks, setTasks] = useState<Tasks[]>([]);
+  
   const [inputTask, setInputTask] = useState<string>("")
 
   const totalTasks = tasks.length; 
@@ -72,12 +58,13 @@ export function TaskProvider({ children }: TaskProviderProps) {
       id: uuid(),
       name: inputTask,
       isDone: false,
-      createdAt: format(data, "dd 'de' MMMM 'de' yyyy", {locale: ptBR}),
+      createdAt: format(today, "dd 'de' MMMM 'de' yyyy", {locale: ptBR}),
     }
 
     
     setTasks((tasks) => [...tasks, newItem])    
     setInputTask("") 
+    localStorage.setItem("myCat", "Tom");
 
   }
 
@@ -86,7 +73,6 @@ export function TaskProvider({ children }: TaskProviderProps) {
   }
 
   function handleClearList(){
-
     const isConfirmed = window.confirm(
       "Are you sure you want to delete all items?"
     );
@@ -104,25 +90,22 @@ export function TaskProvider({ children }: TaskProviderProps) {
     const taskIndex = tasks.findIndex((task) => task.id === id);    
     tasks[taskIndex].isDone = !tasks[taskIndex].isDone;
     setTasks([...tasks])
-  }
-
-
-  const contextValues = {
-    tasks,
-    inputTask,
-    totalTasks,
-    totalTasksDone,
-    setInputTask,
-    handleCreateTask,
-    handleInputChange,
-    handleDeleteTask,
-    handleClearList,
-    handleCheckedTask,
-    handleUndoTask,
-  }
+  }  
 
   return (
-    <TaskContext.Provider value={contextValues}>
+    <TaskContext.Provider value={{
+      tasks,
+      inputTask,
+      totalTasks,
+      totalTasksDone,
+      setInputTask,
+      handleCreateTask,
+      handleInputChange,
+      handleDeleteTask,
+      handleClearList,
+      handleCheckedTask,
+      handleUndoTask,
+    }}>
       {children}
     </TaskContext.Provider>
   )
@@ -133,4 +116,3 @@ export function useTask() {
   return context
 }
 
-// export {TaskContext, TaskProvider}

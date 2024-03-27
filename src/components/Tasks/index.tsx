@@ -1,25 +1,11 @@
 import styles from './styles.module.css'
 import React from 'react';
-import { Check, Trash, Undo } from 'lucide-react';
-
-import {TaskData} from '@/app/page';
 import {useTask} from '@/context/task';
-
 import {TaskItem} from './TaskItem'
 
-export type TasksProps = {
-  onDeleteTask: (id: string) => void;
-  onCheckedTask: (id: string) => void;
-  onUndoTask: (id: string) => void;
-  // tasksFormatted: TaskData[];
-}
+export function Tasks() {
 
-export function Tasks({
-  onDeleteTask, onCheckedTask, onUndoTask}
-:TasksProps) {
-
-  const {tasks} = useTask();
-  console.log(tasks)
+  const {tasks } = useTask();
 
   return (    
     <ul>    
@@ -27,9 +13,6 @@ export function Tasks({
         <TaskItem 
           key={item.id}
           data={item}
-          onDeleteTask={onDeleteTask} 
-          onCheckedTask={onCheckedTask}
-          onUndoTask={onUndoTask}
         />
       ))}      
     </ul>

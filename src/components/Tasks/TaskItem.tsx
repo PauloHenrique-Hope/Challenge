@@ -2,34 +2,35 @@ import { Check, Trash, Undo } from 'lucide-react';
 import styles from './styles.module.css'
 
 import { TaskData } from '@/app/page';
+import {useTask} from '@/context/task';
 
 interface TaskItemProps {
   data: TaskData;
-  onDeleteTask: (id: string) => void;
-  onCheckedTask: (id: string) => void;
-  onUndoTask: (id: string) => void;
 }
 
-export function TaskItem({data, onDeleteTask, onCheckedTask, onUndoTask}:TaskItemProps){
+export function TaskItem({data}:TaskItemProps){
+
+  const {handleDeleteTask, handleCheckedTask, handleUndoTask} = useTask();
+
   return(    
     <li data-isdone={data.isDone} className={styles.task}>
       <span>{data.name}</span>
       <span>{data.createdAt}</span>
       <div>
         {data.isDone &&(
-        <button onClick={() => onUndoTask(data.id)}
+        <button onClick={() => handleUndoTask(data.id)}
           className={styles.taskBtnDone}>
           <Undo />
         </button>
         )}
         {!data.isDone && (
           <button
-            onClick={()=> onCheckedTask(data.id)}
+            onClick={()=> handleCheckedTask(data.id)}
             className={styles.taskBtnDone}>
               <Check />
           </button>
         )}
-        <button onClick={() => onDeleteTask(data.id)}
+        <button onClick={() => handleDeleteTask(data.id)}
           className={styles.taskBtnDelete}>
             <Trash />
         </button>

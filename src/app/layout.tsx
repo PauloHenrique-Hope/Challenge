@@ -22,7 +22,6 @@ export default function RootLayout({
 
         <TaskProvider>
           {children}
-
         </TaskProvider>
 
       </body>

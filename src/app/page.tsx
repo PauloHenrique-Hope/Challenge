@@ -14,10 +14,11 @@ export interface TaskData {
 
 export default function Home() {  
 
-  const {inputTask, totalTasks, totalTasksDone, handleCreateTask, handleInputChange, handleDeleteTask, handleClearList, handleCheckedTask, handleUndoTask} = useTask()
+  const {inputTask, totalTasks, totalTasksDone, handleCreateTask, handleInputChange, handleClearList} = useTask()
 
 
   return (
+
       <main className={styles.main}>
         <h1>Todo App</h1>
 
@@ -28,7 +29,6 @@ export default function Home() {
             placeholder="Add new task" 
             value={inputTask}
             onChange={handleInputChange}
-            // onChange={e => setInputTask(e.target.value)}
           />
           <button type="button" onClick={handleCreateTask}>Criar</button>
         </div>
@@ -41,11 +41,7 @@ export default function Home() {
           </div>
         </div>
         
-        <Tasks           
-          onDeleteTask={handleDeleteTask}
-          onCheckedTask={handleCheckedTask}
-          onUndoTask={handleUndoTask}
-        />
+        <Tasks />
       </main>
    
   );
