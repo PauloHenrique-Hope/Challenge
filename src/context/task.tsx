@@ -1,4 +1,5 @@
 import {createContext, useContext, useState, ReactNode, useEffect} from 'react';
+import { format } from "date-fns";
 import { v4 as uuid } from 'uuid';
 import { TaskData } from '@/app/page';
 
@@ -31,13 +32,13 @@ export function TaskProvider({ children }: TaskProviderProps) {
       id: '1',      
       name: 'react',
       isDone: false,
-      createdAt: Date(),
+      createdAt: format(new Date(), "yyyy-MM-dd"),
     },
     {
       id: '2',      
       name: 'react native',
       isDone: false,
-      createdAt: Date(),
+      createdAt: format(new Date(), "yyyy-MM-dd"),
     }
   ]);
   // useState: input Task
