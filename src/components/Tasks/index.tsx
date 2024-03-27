@@ -19,8 +19,7 @@ export function Tasks({
 :TasksProps) {
 
   const {tasks} = useTask();
-
-  console.log(tasks[1].name)
+  console.log(tasks)
 
   return (    
     <ul>    

@@ -1,12 +1,7 @@
 'use client'
 
-import {useState } from "react";
-import { v4 as uuid } from 'uuid';
 import styles from "./page.module.css";
-
-import {TaskProvider} from '@/context/task';
 import {Tasks} from "@/components/Tasks"
-
 import { useTask } from "@/context/task";
 
 export interface TaskData {
@@ -16,60 +11,13 @@ export interface TaskData {
   createdAt: string;
 }
 
+
 export default function Home() {  
 
-  const {handleCreateTask, inputTask, handleInputChange} = useTask()
+  const {inputTask, totalTasks, totalTasksDone, handleCreateTask, handleInputChange, handleDeleteTask, handleClearList, handleCheckedTask, handleUndoTask} = useTask()
 
-  // const [inputTask, setInputTask] = useState<string>("")
-  const [tasks, setTasks] = useState<TaskData[]>([]) 
-  
-  const totalTasks = tasks.length;  
-  const totalTasksDone = tasks.filter((task) => task.isDone === true ).length;
-  // const tasksFormatted = tasks.map(function(task) {
-  //   return {
-  //     id: task.id,
-  //     name: task.name,
-  //     isDone: task.isDone,
-  //     createdAt: new Date(task.createdAt).toLocaleDateString('pt-br', { dateStyle: "medium" })
-  //   }
-  // })
-
-  // function handleInputChange(e: React.FormEvent<HTMLInputElement>){
-  //   setInputTask(e.currentTarget.value)
-  // }
-
-
-  function handleDeleteTask(id: string){    
-    setTasks((items) => items.filter((item) => item.id !== id))
-  }
-
-
-
-  function handleCheckedTask(id:string){
-    const taskIndex = tasks.findIndex((task) => task.id === id);    
-    tasks[taskIndex].isDone = !tasks[taskIndex].isDone;
-    setTasks([...tasks])
-  }
-    
-
-  function handleClearList(){
-
-    const isConfirmed = window.confirm(
-      "Are you sure you want to delete all items?"
-    );
-
-    if (isConfirmed) setTasks([]);
-  }
-
-
-  function handleUndoTask(id:string){
-    const taskIndex = tasks.findIndex((task) => task.id === id);    
-    tasks[taskIndex].isDone = !tasks[taskIndex].isDone;
-    setTasks([...tasks])
-  }
 
   return (
-    <TaskProvider>
       <main className={styles.main}>
         <h1>Todo App</h1>
 
@@ -99,6 +47,6 @@ export default function Home() {
           onUndoTask={handleUndoTask}
         />
       </main>
-    </TaskProvider>
+   
   );
 }
