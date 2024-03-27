@@ -1,12 +1,13 @@
 'use client'
 
-import { useState } from "react";
+import {useState } from "react";
 import { v4 as uuid } from 'uuid';
 import styles from "./page.module.css";
 
 import {TaskProvider} from '@/context/task';
 import {Tasks} from "@/components/Tasks"
 
+import { useTask } from "@/context/task";
 
 export interface TaskData {
   id: string;
@@ -16,38 +17,26 @@ export interface TaskData {
 }
 
 export default function Home() {  
-  const [inputTask, setInputTask] = useState<string>("")
+
+  const {handleCreateTask, inputTask, handleInputChange} = useTask()
+
+  // const [inputTask, setInputTask] = useState<string>("")
   const [tasks, setTasks] = useState<TaskData[]>([]) 
   
   const totalTasks = tasks.length;  
   const totalTasksDone = tasks.filter((task) => task.isDone === true ).length;
-  const tasksFormatted = tasks.map(function(task) {
-    return {
-      id: task.id,
-      name: task.name,
-      isDone: task.isDone,
-      createdAt: new Date(task.createdAt).toLocaleDateString('pt-br', { dateStyle: "medium" })
-    }
-  })
+  // const tasksFormatted = tasks.map(function(task) {
+  //   return {
+  //     id: task.id,
+  //     name: task.name,
+  //     isDone: task.isDone,
+  //     createdAt: new Date(task.createdAt).toLocaleDateString('pt-br', { dateStyle: "medium" })
+  //   }
+  // })
 
-  function handleInputChange(e: React.FormEvent<HTMLInputElement>){
-    setInputTask(e.currentTarget.value)
-  }
-
-
-  function handleCreateTask(){
-    if(inputTask === "")return
-    
-    const newItem:TaskData = {
-      id: uuid(),
-      isDone: false,
-      name: inputTask,
-      createdAt: Date()
-    }
-    
-    setTasks((tasks) => [...tasks, newItem])    
-    setInputTask("") 
-  }
+  // function handleInputChange(e: React.FormEvent<HTMLInputElement>){
+  //   setInputTask(e.currentTarget.value)
+  // }
 
 
   function handleDeleteTask(id: string){    

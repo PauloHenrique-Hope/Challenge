@@ -27,7 +27,7 @@ export function Tasks({
       {tasks.map((item) => (
         <TaskItem 
           key={item.id}
-          data={item} 
+          data={item}
           onDeleteTask={onDeleteTask} 
           onCheckedTask={onCheckedTask}
           onUndoTask={onUndoTask}

@@ -1,17 +1,21 @@
-import {createContext, useState, ReactNode, useContext} from 'react';
-import { TaskData } from '@/app/page';
+import {createContext, useContext, useState, ReactNode, useEffect} from 'react';
 import { v4 as uuid } from 'uuid';
+import { TaskData } from '@/app/page';
+
 
 interface Tasks {
   id: string;
   name: string;
   isDone: boolean;
-  createdAt: string | number;
+  createdAt: string;
 }
 
 interface TaskContextData {
   tasks: Tasks[];
+  inputTask: string,
   handleCreateTask: () => void;
+  handleInputChange: (e: React.FormEvent<HTMLInputElement>) => void;
+  
 }
 
 export const TaskContext = createContext({} as TaskContextData);
@@ -21,22 +25,25 @@ interface TaskProviderProps {
 }
 
 export function TaskProvider({ children }: TaskProviderProps) {
+  
   const [tasks, setTasks] = useState<Tasks[]>([
     {
       id: '1',      
       name: 'react',
       isDone: false,
-      createdAt: Date.now(),
+      createdAt: Date(),
     },
     {
       id: '2',      
       name: 'react native',
       isDone: false,
-      createdAt: Date.now(),
+      createdAt: Date(),
     }
   ]);
   // useState: input Task
   const [inputTask, setInputTask] = useState<string>("")
+
+  
 
   function handleCreateTask() {
     if(inputTask === "")return
@@ -47,20 +54,37 @@ export function TaskProvider({ children }: TaskProviderProps) {
       name: inputTask,
       createdAt: Date()
     }
+
+    
     setTasks((tasks) => [...tasks, newItem])    
     setInputTask("") 
 
   }
 
+  function handleInputChange(e: React.FormEvent<HTMLInputElement>){
+    e.preventDefault();
+    setInputTask(e.currentTarget.value)
+  }
+
+
+  const contextValues = {
+    tasks,
+    inputTask,
+    setInputTask,
+    handleCreateTask,
+    handleInputChange,
+  }
+
   return (
-    <TaskContext.Provider value={{ tasks, handleCreateTask }}>
+    <TaskContext.Provider value={contextValues}>
       {children}
     </TaskContext.Provider>
   )
 }
 
 export function useTask() {
-  const context = useContext(TaskContext)
+  return useContext(TaskContext)
 
-  return context;
+  // return context;
 }
+
