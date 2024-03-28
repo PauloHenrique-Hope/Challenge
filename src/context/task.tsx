@@ -4,7 +4,7 @@ import { format} from "date-fns";
 import { ptBR } from 'date-fns/locale';
 import { v4 as uuid } from 'uuid';
 import { TaskData } from '@/app/page';
-import {createContext, useContext, useState, ReactNode,  Dispatch, SetStateAction, ChangeEvent} from 'react';
+import {createContext, useContext, useState, ReactNode,  Dispatch, SetStateAction, ChangeEvent, useEffect} from 'react';
 
 interface Tasks {
   id: string;
@@ -35,16 +35,23 @@ interface TaskProviderProps {
 }
 
 export function TaskProvider({ children }: TaskProviderProps) {
+ 
+  const storedTasks = JSON.parse(localStorage.getItem('tasks')!)
+  
 
-  const today = new Date();
-  
-  const [tasks, setTasks] = useState<Tasks[]>([]);
-  
+  const [tasks, setTasks] = useState<Tasks[]>(storedTasks);
   const [inputTask, setInputTask] = useState<string>("")
 
+
+  const today = new Date();
   const totalTasks = tasks.length; 
   const totalTasksDone = tasks.filter((task) => task.isDone === true ).length;
 
+
+  useEffect(() => {
+    localStorage.setItem("tasks", JSON.stringify(tasks))
+    
+  }, [tasks])
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     setInputTask(event.target.value)
@@ -64,7 +71,6 @@ export function TaskProvider({ children }: TaskProviderProps) {
     
     setTasks((tasks) => [...tasks, newItem])    
     setInputTask("") 
-    localStorage.setItem("myCat", "Tom");
 
   }
 
