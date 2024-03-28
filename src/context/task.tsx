@@ -34,12 +34,8 @@ interface TaskProviderProps {
   children: ReactNode;
 }
 
-export function TaskProvider({ children }: TaskProviderProps) {
- 
-  const storedTasks = JSON.parse(localStorage.getItem('tasks')!)
-  
-
-  const [tasks, setTasks] = useState<Tasks[]>(storedTasks);
+export function TaskProvider({ children }: TaskProviderProps) {  
+  const [tasks, setTasks] = useState<Tasks[]>([]);
   const [inputTask, setInputTask] = useState<string>("")
 
 
@@ -47,10 +43,14 @@ export function TaskProvider({ children }: TaskProviderProps) {
   const totalTasks = tasks.length; 
   const totalTasksDone = tasks.filter((task) => task.isDone === true ).length;
 
+  useEffect(() => {
+    const getTasks = JSON.parse(localStorage.getItem('tasks')!)
+  
+    if(getTasks.length > 0) return setTasks(getTasks);    
+  }, [])
 
   useEffect(() => {
     localStorage.setItem("tasks", JSON.stringify(tasks))
-    
   }, [tasks])
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -69,9 +69,8 @@ export function TaskProvider({ children }: TaskProviderProps) {
     }
 
     
-    setTasks((tasks) => [...tasks, newItem])    
+    setTasks((tasks) => [...tasks, newItem])          
     setInputTask("") 
-
   }
 
   function handleDeleteTask(id: string){    
@@ -84,6 +83,7 @@ export function TaskProvider({ children }: TaskProviderProps) {
     );
 
     if (isConfirmed) setTasks([]);
+    localStorage.removeItem('tasks')
   }
 
   function handleCheckedTask(id:string){

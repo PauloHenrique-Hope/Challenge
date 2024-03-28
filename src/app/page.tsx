@@ -1,5 +1,5 @@
 'use client'
-
+import { Trash } from 'lucide-react';
 import styles from "./page.module.css";
 import {Tasks} from "@/components/Tasks"
 import { useTask } from "@/context/task";
@@ -36,7 +36,7 @@ export default function Home() {
         <div className={styles.tasks}>
           <h2>Atividades</h2>
           <div className={styles.div}>
-            <button className={styles.taskBtnClear} onClick={handleClearList}>Clear</button>
+            <button className={styles.taskBtnClear} onClick={handleClearList}>< Trash/></button>
             <span>Total: {totalTasksDone}/{totalTasks}</span>
           </div>
         </div>
